@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>『看見・當下』— AR 行動計畫</title>
+    <!-- Chosen Palette: Warm Neutral (bg-neutral-50) + Emerald (bg-emerald-700) + Amber Accent (text-amber-600) -->
+    <!-- Application Structure Plan: 採用單頁式應用 (SPA) 結構，頂部有 sticky 導覽列，搭配捲動監控 (scroll-spy)。架構分為六大區塊：1. 緒論 (介紹)、2. 挑戰與洞察 (問題)、3. 解決方案 (AR App)、4. 觸發改變 (CTA 與行銷)、5. 推廣計畫 (Go-to-Market)、6. 結論 (KPIs)。這個結構能模仿簡報的線性說服流程 (問題 -> 方案 -> 影響)，同時允許評審透過導覽列進行非線性跳轉，以尊重評審時間。互動性主要來自於將 OpView 數據轉化為動態 Chart.js 圖表，並製作一個 AR App 的視覺模型 (Mockup)，使方案更具體。 -->
+    <!-- Visualization & Content Choices:
+        1. OpView 1 (行動斷裂): 簡報中的文字雲 -> Goal: 證明「懷念」與「行動」的巨大落差 -> Viz: Chart.js 甜甜圈圖 (Doughnut) -> Interaction: Hover 顯示百分比 -> Justification: 甜甜圈圖能更直觀、量化地顯示「90% 懷念 vs 10% 行動」的失衡，比文字雲更有力。
+        2. OpView 2 (AR 可行性): 簡報中的 P/N 值 -> Goal: 證明 AR 是對的工具 -> Viz: Chart.js 長條圖 (Bar) -> Interaction: Hover 顯示數值 -> Justification: 直接比較「AR 展覽」與「一般展覽」在「社群聲量」和「好感度 (P/N)」上的差異。
+        3. 核心功能 (天氣/四季/生態): 簡報 Slide 8-9 -> Goal: 解釋方案細節 -> Viz: HTML/Tailwind 製作的「頁籤 (Tabs)」組件 -> Interaction: 點擊切換功能說明 -> Justification: 在有限空間內清晰組織三項主要功能。
+        4. OpView 3 (功能可行性): 簡報 Slide 10 -> Goal: 證明三大功能受歡迎 -> Viz: Chart.js 水平長條圖 (Horizontal Bar) -> Interaction: Hover 顯示聲量 -> Justification: 清楚顯示「即時性」、「稀缺性」、「在地關懷」是高聲量主題。
+        5. AR Mockup (CTA): 簡報 Slide 12 -> Goal: 讓 CTA 方案具體化 -> Viz: HTML/Tailwind 打造的手機視覺模型 -> Interaction: 無 (靜態展示) -> Justification: 視覺模型遠比文字描述更有說服力。
+        6. OpView 4 (CTA 可行性): 簡報 Slide 13 -> Goal: 證明 CTA 能解決「行動無力感」 -> Viz: Chart.js 圓餅圖 (Pie) -> Interaction: Hover 顯示百分比 -> Justification: 視覺化呈現大眾「行動的阻礙」(如：不知道怎麼做)。
+        7. OpView 5 (Z 世代): 簡報 Slide 15 -> Goal: 證明 FOMO 策略有效 -> Viz: Chart.js 甜甜圈圖 (Doughnut) -> Interaction: Hover 顯示 -> Justification: 顯示 Z 世代的關鍵熱詞 (#限定, #打卡) 佔比。
+        8. 推廣夥伴 (Partners): 簡報 Slide 17 -> Goal: 說明夥伴佈局 -> Viz: HTML/Tailwind 三欄式網格卡片 -> Interaction: 無 -> Justification: 比圖表更清晰地展示三類夥伴及其目標受眾。
+        9. KPI: 簡報 Slide 18 -> Goal: 總結成效 -> Viz: HTML/Tailwind 兩欄式「數據卡 (Stat Card)」 -> Interaction: 無 -> Justification: 用大數字強調兩個最關鍵的 KPI。
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --color-primary: #059669; /* emerald-600 */
+            --color-primary-dark: #047857; /* emerald-700 */
+            --color-accent: #d97706; /* amber-600 */
+            --color-text: #1f2937; /* gray-800 */
+            --color-bg: #f9fafb; /* gray-50 */
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        nav a.active {
+            font-weight: 600;
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 頂部導覽列 -->
+    <header class="bg-white/90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 md:px-6 py-3">
+            <ul class="flex justify-center items-center space-x-4 md:space-x-8 text-sm md:text-base">
+                <li><a href="#home" class="nav-link py-2 border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-600 transition-all">緒論</a></li>
+                <li><a href="#challenge" class="nav-link py-2 border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-600 transition-all">挑戰與洞察</a></li>
+                <li><a href="#solution" class="nav-link py-2 border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-600 transition-all">解決方案</a></li>
+                <li><a href="#action" class="nav-link py-2 border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-600 transition-all">觸發改變</a></li>
+                <li><a href="#promotion" class="nav-link py-2 border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-600 transition-all">推廣計畫</a></li>
+                <li><a href="#conclusion" class="nav-link py-2 border-b-2 border-transparent hover:text-emerald-600 hover:border-emerald-600 transition-all">結論</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main>
+        <!-- Section 1: 緒論 / 封面 (Slide 1-2) -->
+        <section id="home" class="w-full min-h-[70vh] flex items-center justify-center text-center bg-white shadow-lg pt-16 pb-20 px-4">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl font-bold text-emerald-700">『看見・當下』</h1>
+                <h2 class="mt-4 text-2xl md:text-3xl font-light text-gray-700">讓影像活起來的 AR 行動計畫</h2>
+                <p class="mt-8 text-lg text-gray-600 max-w-2xl mx-auto">
+                    齊柏林導演用影像讓我們「看見台灣」，基金會繼承使命，透過展覽喚醒大眾。本企劃將回應一個核心命題：
+                </p>
+                <blockquote class="mt-6 p-6 bg-emerald-50 border-l-4 border-emerald-600 text-xl font-medium text-emerald-900 rounded-r-lg shadow-sm">
+                    「如何透過影像敘事， 創造環境關注與<span class="font-bold text-amber-600">持續改變</span>的力量？」
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- Section 2: 挑戰與洞察 (Slide 3-4) -->
+        <section id="challenge" class="py-20 md:py-28 px-4 scroll-mt-20">
+            <div class="container mx-auto max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">挑戰與洞察</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">我們發現，從「感動」到「行動」之間，存在一個明顯的斷裂點。</p>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Slide 3: 挑戰 -->
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-semibold mb-4 text-emerald-700">當下的三大挑戰</h3>
+                        <div class="p-5 bg-white rounded-lg shadow-lg border border-gray-200">
+                            <h4 class="text-lg font-bold text-gray-800">1. 靜態的感動</h4>
+                            <p class="text-gray-600 mt-1">傳統攝影展是「單向」觀看，影像是「過去」的紀錄，難以呈現環境的動態變化。</p>
+                        </div>
+                        <div class="p-5 bg-white rounded-lg shadow-lg border border-gray-200">
+                            <h4 class="text-lg font-bold text-gray-800">2. 行動的斷裂</h4>
+                            <p class="text-gray-600 mt-1">觀展者當下的感動，在離開展場後，難以轉化為「持續的行動」。</p>
+                        </div>
+                        <div class="p-5 bg-white rounded-lg shadow-lg border border-gray-200">
+                            <h4 class="text-lg font-bold text-gray-800">3. 關注的流失</h4>
+                            <p class="text-gray-600 mt-1">環境是「動態」變化的，但靜態展覽難以呈現「當下」的環境狀態。</p>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: OpView 1 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 1】</h3>
+                        <h4 class="text-xl font-light text-center mb-6">「感動」仍在，但「行動」缺席</h4>
+                        <div class="chart-container max-w-sm mx-auto">
+                            <canvas id="opviewChart1"></canvas>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                            <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                            <p class="text-gray-600 text-center mt-2">數據證實了「行動斷裂」的痛點。大眾的感動是真實的 (90%)，但我們的策略必須提供一個「從懷念走向行動」(僅 10%) 的橋樑。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: 解決方案 (Slide 5-10) -->
+        <section id="solution" class="py-20 md:py-28 px-4 bg-white shadow-inner scroll-mt-20">
+            <div class="container mx-auto max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6 text-emerald-700">我們的解決方案</h2>
+                
+                <!-- Slide 5: 核心策略 -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <p class="text-lg text-gray-600 mb-4">從「靜態展覽」升級為：</p>
+                    <h3 class="text-4xl font-bold text-gray-800">一座「活的展覽 (A Living Exhibition)」</h3>
+                    <p class="text-lg text-gray-600 mt-6">我們不只讓觀眾「看見」齊柏林拍下的「過去」，更要讓他們「看見」環境變化的「**當下**」。</p>
+                    <blockquote class="mt-8 p-4 bg-emerald-50 border-t-4 border-b-4 border-emerald-500 text-xl font-medium text-emerald-900 shadow-sm">
+                        「每一次看見，都是獨一無二。」<br>「每一次行動，都能守護未來。」
+                    </blockquote>
+                </div>
+
+                <!-- Slide 7: OpView 2 -->
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200 max-w-4xl mx-auto mb-20">
+                    <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 2】</h3>
+                    <h4 class="text-xl font-light text-center mb-6">為什麼是 AR？「高分享」與「高好感」的最佳工具</h4>
+                    <div class="chart-container max-w-2xl mx-auto">
+                        <canvas id="opviewChart2"></canvas>
+                    </div>
+                    <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                        <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                        <p class="text-gray-600 text-center mt-2">數據證明，AR 不僅是噱頭，更是能有效創造「正面口碑」與「社群分享」的行銷利器，完美符合我們的需求。</p>
+                    </div>
+                </div>
+
+                <!-- Slide 6, 8, 9: AR 體驗與功能 -->
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                    <div class="space-y-4">
+                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">『看見・當下』 AR 體驗</h3>
+                        <p class="text-lg text-gray-600">透過基金會專屬 APP，觀展者掃描展場影像，即可啟動 AR 體驗三部曲：</p>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700 text-lg">
+                            <li><span class="font-bold text-gray-800">掃描 (Scan)：</span> 掃描展場中指定的影像。</li>
+                            <li><span class="font-bold text-gray-800">連結 (Connect)：</span> 即時串接「中央氣象署 API」與「手機系統日期」。</li>
+                            <li><span class="font-bold text-gray-800">呈現 (Display)：</span> AR 畫面將「即時模擬」出該地點的當下樣貌。</li>
+                        </ol>
+                    </div>
+                    
+                    <!-- 互動頁籤 -->
+                    <div x-data="{ tab: 'weather' }" class="rounded-lg shadow-xl overflow-hidden border border-gray-200">
+                        <div class="flex bg-gray-100 border-b border-gray-300">
+                            <button @click="tab = 'weather'" :class="{ 'bg-white text-emerald-600 border-b-2 border-emerald-600': tab === 'weather', 'text-gray-600 hover:bg-gray-200': tab !== 'weather' }" class="flex-1 py-3 px-2 font-semibold transition-all">
+                                1. 即時天氣
+                            </button>
+                            <button @click="tab = 'seasons'" :class="{ 'bg-white text-emerald-600 border-b-2 border-emerald-600': tab === 'seasons', 'text-gray-600 hover:bg-gray-200': tab !== 'seasons' }" class="flex-1 py-3 px-2 font-semibold transition-all">
+                                2. 即時四季
+                            </button>
+                            <button @click="tab = 'ecology'" :class="{ 'bg-white text-emerald-600 border-b-2 border-emerald-600': tab === 'ecology', 'text-gray-600 hover:bg-gray-200': tab !== 'ecology' }" class="flex-1 py-3 px-2 font-semibold transition-all">
+                                3. 即時生態
+                            </button>
+                        </div>
+                        <div class="p-6 bg-white min-h-[200px]">
+                            <div x-show="tab === 'weather'" class="space-y-2">
+                                <h4 class="text-xl font-bold text-gray-800">功能 1：【即時天氣】</h4>
+                                <p class="text-gray-600">掃描玉山。如果 API 回傳為雨天，AR 就呈現「雨中的玉山」；如果是晴天，則呈現「晴空的玉山」。觸發觀展者對「即時」的好奇。</p>
+                            </div>
+                            <div x-show="tab === 'seasons'" class="space-y-2">
+                                <h4 class="text-xl font-bold text-gray-800">功能 2：【即時四季】</h4>
+                                <p class="text-gray-600">透過手機日期判斷。6 月（夏季）觀展，AR 呈現「夏日的樣貌」；12 月（冬季）觀展，則可能呈現「雪景」。觸發觀展者對「稀缺」的追求。</p>
+                            </div>
+                            <div x-show="tab === 'ecology'" class="space-y-2">
+                                <h4 class="text-xl font-bold text-gray-800">功能 3：【即時生態】</h4>
+                                <p class="text-gray-600">掃描「台灣黑熊」棲地照片。白天掃描，AR 呈現「日間覓食」；夜晚觀展，則呈現「夜間歇息」。提升在地「關懷」的連結。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 10: OpView 3 -->
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200 max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 3】</h3>
+                    <h4 class="text-xl font-light text-center mb-6">策略命中「即時、稀缺、在地」三大熱議主題</h4>
+                    <div class="chart-container max-w-2xl mx-auto">
+                        <canvas id="opviewChart3"></canvas>
+                    </div>
+                    <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                        <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                        <p class="text-gray-600 text-center mt-2">我們的 AR 功能並非憑空想像，而是精準回應了社群上「關注度最高」的三大主題，確保企劃能引發共鳴。</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 4: 觸發改變 (Slide 11-15) -->
+        <section id="action" class="py-20 md:py-28 px-4 scroll-mt-20">
+            <div class="container mx-auto max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">觸發改變</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">AR 很酷，但不足以觸發「改變」。我們的設計核心是「**行動閉環**」，AR 只是觸發點。</p>
+
+                <!-- Slide 12: CTA Mockup -->
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                    <div class="space-y-4">
+                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">CTA 設計：打造「行動閉環」</h3>
+                        <p class="text-lg text-gray-600">在 AR 體驗的同時，我們提供「知識連結」與「行動呼籲 (CTA)」，引導觀展者完成從「互動」到「行動」的關鍵一步。</p>
+                        <ul class="space-y-3 text-gray-700">
+                            <li><strong class="text-gray-900">1. 掃描：</strong> 掃描海岸線照片。</li>
+                            <li><strong class="text-gray-900">2. 呈現：</strong> AR 呈現「大潮、陰天」的海岸。</li>
+                            <li><strong class="text-gray-900">3. 連結 (知識)：</strong> 跳出資訊：「您知道嗎？氣候變遷使海平面上升，這片沙灘正以每年 1 公尺的速度消失...」</li>
+                            <li><strong class="text-gray-900">4. 行動 (CTA)：</strong> 畫面出現三個按鈕，提供低門檻的行動選項。</li>
+                        </ul>
+                    </div>
+
+                    <!-- AR App Mockup -->
+                    <div class="flex justify-center">
+                        <div class="w-full max-w-xs bg-gray-900 rounded-[2.5rem] p-4 shadow-2xl border-4 border-gray-800">
+                            <div class="w-full h-[550px] bg-gray-100 rounded-[2rem] overflow-hidden relative">
+                                <!-- Mock AR Image (Placeholder) -->
+                                <img src="https://placehold.co/400x600/60a5fa/ffffff?text=AR%E6%B5%B7%E5%B2%B8%E7%95%AB%E9%9D%A2" alt="AR Mockup" class="w-full h-full object-cover opacity-80">
+                                
+                                <!-- Mock UI Overlay -->
+                                <div class="absolute bottom-0 left-0 w-full p-4 bg-black/60 backdrop-blur-sm text-white">
+                                    <h4 class="font-bold text-lg">您知道嗎？</h4>
+                                    <p class="text-sm mt-1">氣候變遷使海平面上升，這片沙灘正以每年 1 公尺的速度消失...</p>
+                                    
+                                    <div class="flex space-x-3 mt-4">
+                                        <button class="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-3 rounded-lg font-semibold transition-all">隨手分享</button>
+                                        <button class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm py-2 px-3 rounded-lg font-semibold transition-all">了解更多</button>
+                                        <button class="flex-1 bg-amber-600 hover:bg-amber-700 text-white text-sm py-2 px-3 rounded-lg font-semibold transition-all">我要行動</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 13: OpView 4 -->
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200 max-w-4xl mx-auto mb-20">
+                    <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 4】</h3>
+                    <h4 class="text-xl font-light text-center mb-6">為何此 CTA 有效？解決大眾對環保的「行動無力感」</h4>
+                    <div class="chart-container max-w-sm mx-auto">
+                        <canvas id="opviewChart4"></canvas>
+                    </div>
+                    <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                        <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                        <p class="text-gray-600 text-center mt-2">大眾不是不關心，而是「行動無門」。我們的 CTA 提供了「簡單、明確、低門檻」的行動選項，能有效將「關注」轉化為「改變」。</p>
+                    </div>
+                </div>
+
+                <!-- Slide 14 & 15: 創新行銷 & OpView 5 -->
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-4">
+                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">創新行銷：持續重遊 (Re-engagement)</h3>
+                        <p class="text-lg text-gray-600">利用 AR 的「**動態內容**」，創造「**持續重遊**」的強大動機，這就是我們的「活展覽」行銷策略。</p>
+                        <ul class="list-check space-y-3 text-gray-700">
+                            <li class="pl-4 relative before:content-['✓'] before:text-emerald-600 before:absolute before:left-0 before:top-1"><strong class="text-gray-900">創造「獨特稀缺感」 (FOMO)：</strong> 「你今天看到的展，跟昨天看到的不一樣。」展覽從「一次性」變成了「可收集」的體驗。</li>
+                            <li class="pl-4 relative before:content-['✓'] before:text-emerald-600 before:absolute before:left-0 before:top-1"><strong class="text-gray-900">APP 主動式再行銷：</strong> 寒流來襲時，APP 推播：「快訊：玉山可能下雪了！快來展場捕捉『AR 限定雪景』！」</li>
+                        </ul>
+                    </div>
+
+                    <!-- Slide 15: OpView 5 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 5】</h3>
+                        <h4 class="text-xl font-light text-center mb-6">為何此策略能打動 Z 世代？</h4>
+                        <div class="chart-container max-w-sm mx-auto">
+                            <canvas id="opviewChart5"></canvas>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                            <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                            <p class="text-gray-600 text-center mt-2">我們的「活展覽」策略，完美創造了「每日限定」的稀缺感。這精準命中了 Z 世代「害怕錯過 (FOMO)」並樂於「拍照打卡」的社群心理。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: 推廣計畫 (Slide 16-17) -->
+        <section id="promotion" class="py-20 md:py-28 px-4 bg-white shadow-inner scroll-mt-20">
+            <div class="container mx-auto max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">推廣計畫與夥伴佈局</h2>
+                
+                <!-- Slide 16: 推廣策略 -->
+                <div class="grid md:grid-cols-2 gap-12 mb-20">
+                    <div class="bg-emerald-50 p-6 rounded-lg shadow-lg border border-emerald-200">
+                        <h3 class="text-2xl font-semibold mb-4 text-emerald-800">1. 線上 (Online)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-emerald-900">
+                            <li><strong>社群預熱：</strong> 「#如果齊柏林今天還在飛」挑戰，引發討論。</li>
+                            <li><strong>KOL 合作：</strong> 邀請「科技類」(開箱AR)、「環保類」(倡議理念)、「旅遊類」(介紹景點) 的 KOC/KOL 搶先體驗。</li>
+                            <li><strong>跨界合作：</strong> 與「天氣 APP」合作推播，在惡劣天氣時推播展覽訊息。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-lg shadow-lg border border-amber-200">
+                        <h3 class="text-2xl font-semibold mb-4 text-amber-800">2. 線下 (Offline)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-amber-900">
+                            <li><strong>展場引導：</strong> 明確的 AR 體驗指示牌，降低使用門檻。</li>
+                            <li><strong>票務策略：</strong> 推出「四季套票」或「憑票根重遊 8 折」優惠，將重遊動機轉化為實際營收。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 17: OpView 6 -->
+                <div>
+                    <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 6】</h3>
+                    <h4 class="text-xl font-light text-center mb-10">精準觸及多元受眾的夥伴佈局</h4>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-xl border border-gray-200 text-center">
+                            <span class="text-4xl">💻</span>
+                            <h5 class="text-xl font-bold mt-3 text-gray-800">科技 KOL</h5>
+                            <p class="text-gray-600 mt-2">對「新科技」與「展覽」皆有高度興趣。</p>
+                            <span class="mt-4 inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold text-sm">= 早期採用者</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-xl border border-gray-200 text-center">
+                            <span class="text-4xl">🌦️</span>
+                            <h5 class="text-xl font-bold mt-3 text-gray-800">天氣 APP</h5>
+                            <p class="text-gray-600 mt-2">用戶基數龐大，遍佈各年齡層。</p>
+                            <span class="mt-4 inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-semibold text-sm">= 大眾市場</span>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-xl border border-gray-200 text-center">
+                            <span class="text-4xl">🌱</span>
+                            <h5 class="text-xl font-bold mt-3 text-gray-800">環保 KOL</h5>
+                            <p class="text-gray-600 mt-2">高黏著度、高行動力，認同基金會理念。</p>
+                            <span class="mt-4 inline-block bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold text-sm">= 理念支持者</span>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-4 bg-gray-100 rounded-lg max-w-2xl mx-auto">
+                        <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                        <p class="text-gray-600 text-center mt-2">我們的推廣佈局並非亂槍打鳥，而是透過數據驗證，能精準觸及「科技嘗鮮者」、「理念支持者」與「廣大潛在觀展者」。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: 結論 (Slide 18-20) -->
+        <section id="conclusion" class="py-20 md:py-28 px-4 bg-emerald-700 text-white scroll-mt-20">
+            <div class="container mx-auto max-w-6xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">效益評估 (KPI) & 結論</h2>
+                
+                <!-- Slide 18: KPI -->
+                <p class="text-lg text-emerald-100 mb-4">我們將專注於兩個核心指標：</p>
+                <div class="flex flex-col md:flex-row justify-center gap-8 mb-16">
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-lg flex-1 border border-white/20">
+                        <h4 class="text-lg font-semibold text-amber-300">關鍵創新指標</h4>
+                        <p class="text-5xl font-bold text-white mt-2">重遊率</p>
+                        <p class="text-emerald-100 mt-2">(Re-visit Rate)</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-lg flex-1 border border-white/20">
+                        <h4 class="text-lg font-semibold text-amber-300">關鍵改變指標</h4>
+                        <p class="text-5xl font-bold text-white mt-2">CTA 點擊率</p>
+                        <p class="text-emerald-100 mt-2">(Action Click Rate)</p>
+                    </div>
+                </div>
+
+                <!-- Slide 19: 結論 -->
+                <p class="text-xl text-emerald-100 max-w-3xl mx-auto mb-6">
+                    齊柏林導演用影像，讓我們「看見台灣」。<br>
+                    我們的「看見・當下」計畫，回應了時代的呼喚——<strong class="text-white">環境，正分分秒秒在改變。</strong>
+                </p>
+                <p class="text-xl text-white max-w-3xl mx-auto font-light mb-10">
+                    我們透過 AR，讓靜態的影像「<strong class="font-semibold">活了過來</strong>」，讓觀展者「<strong class="font-semibold">持續回來</strong>」，最終，讓短暫的感動，轉化為「<strong class="font-semibold">持續的改變力量</strong>」。
+                </p>
+                
+                <h3 class="text-3xl md:text-4xl font-bold text-white">謝謝聆聽</h3>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 text-center p-6">
+        <p>&copy; 2025 『看見・當下』 AR 行動計畫</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#1f2937',
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#059669',
+                        titleFont: {
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 14
+                        },
+                        padding: 12,
+                        cornerRadius: 6,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                }
+                                if (context.parsed.x !== null) {
+                                    label += context.parsed.x;
+                                }
+                                if (context.parsed.r !== undefined) {
+                                    label += context.parsed.r + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+            };
+
+            const wrapText = (text, maxChars) => {
+                const words = text.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxChars) {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+            
+            Chart.defaults.color = '#4b5563';
+            Chart.defaults.font.family = 'Arial, "Noto Sans", sans-serif';
+            
+            // OpView 1: 行動斷裂 (Doughnut)
+            const ctx1 = document.getElementById('opviewChart1').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['討論「懷念、感動」', '討論「行動、改變」'],
+                    datasets: [{
+                        label: '聲量佔比',
+                        data: [90, 10],
+                        backgroundColor: [
+                            '#a7f3d0', // emerald-200
+                            '#f59e0b'  // amber-500
+                        ],
+                        borderColor: [
+                            '#f9fafb',
+                            '#f9fafb'
+                        ],
+                        borderWidth: 3,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...chartOptions,
+                    plugins: { ...chartOptions.plugins,
+                        tooltip: { ...chartOptions.plugins.tooltip,
+                            callbacks: {
+                                label: (context) => ` ${context.label}: ${context.parsed}%`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // OpView 2: 為什麼是 AR (Bar)
+            const ctx2 = document.getElementById('opviewChart2').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['一般展覽', 'AR 互動展覽'],
+                    datasets: [
+                        {
+                            label: '社群聲量 (相對值)',
+                            data: [100, 280],
+                            backgroundColor: '#6ee7b7', // emerald-300
+                            borderColor: '#059669',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'P/N 值 (好感度)',
+                            data: [2.5, 6.8],
+                            backgroundColor: '#fde68a', // amber-200
+                            borderColor: '#d97706',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: { ...chartOptions, 
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#1f2937' }
+                        },
+                        x: {
+                            ticks: { color: '#1f2937' }
+                        }
+                    } 
+                }
+            });
+
+            // OpView 3: 功能可行性 (Horizontal Bar)
+            const ctx3 = document.getElementById('opviewChart3').getContext('2d');
+            new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['在地關懷 (如: 台灣黑熊)', '稀缺性 (如: 雪景)', '即時性 (如: 天氣)'],
+                    datasets: [{
+                        label: '社群聲量熱度',
+                        data: [75, 90, 85],
+                        backgroundColor: [
+                            '#34d399', // emerald-400
+                            '#fbbf24', // amber-400
+                            '#60a5fa'  // blue-400
+                        ],
+                        borderColor: '#f9fafb',
+                        borderWidth: 2
+                    }]
+                },
+                options: { ...chartOptions, 
+                    indexAxis: 'y',
+                    plugins: {
+                        ...chartOptions.plugins,
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // OpView 4: 行動無力感 (Pie)
+            const ctx4 = document.getElementById('opviewChart4').getContext('2d');
+            new Chart(ctx4, {
+                type: 'pie',
+                data: {
+                    labels: ['不知道怎麼做', '覺得太難了', '感到無力感', '其他'],
+                    datasets: [{
+                        label: '環保行動阻礙',
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            '#fbbf24', // amber-400
+                            '#fca5a5', // red-300
+                            '#9ca3af', // gray-400
+                            '#d1d5db'  // gray-300
+                        ],
+                        borderColor: '#f9fafb',
+                        borderWidth: 3,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...chartOptions,
+                    plugins: { ...chartOptions.plugins,
+                        tooltip: { ...chartOptions.plugins.tooltip,
+                            callbacks: {
+                                label: (context) => ` ${context.label}: ${context.parsed}%`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // OpView 5: Z 世代 (Doughnut)
+            const ctx5 = document.getElementById('opviewChart5').getContext('2d');
+            new Chart(ctx5, {
+                type: 'doughnut',
+                data: {
+                    labels: ['#限定', '#打卡', '#必去', '#FOMO', '其他'],
+                    datasets: [{
+                        label: 'Z 世代展覽熱詞',
+                        data: [35, 30, 15, 10, 10],
+                        backgroundColor: [
+                            '#f59e0b', // amber-500
+                            '#3b82f6', // blue-500
+                            '#10b981', // emerald-500
+                            '#ef4444', // red-500
+                            '#d1d5db'
+                        ],
+                        borderColor: '#f9fafb',
+                        borderWidth: 3,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...chartOptions,
+                    plugins: { ...chartOptions.plugins,
+                        tooltip: { ...chartOptions.plugins.tooltip,
+                            callbacks: {
+                                label: (context) => ` ${context.label}: ${context.parsed}%`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Scroll-spy for nav
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('nav a.nav-link');
+
+            const activateLink = (id) => {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateLink(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px', threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Activate first link manually
+            if (window.scrollY < 200) {
+                 activateLink('home');
+            }
+        });
+    </script>
+</body>
+</html>
