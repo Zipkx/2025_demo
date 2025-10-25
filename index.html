@@ -2,8 +2,8 @@
 <html lang="zh-Hant-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>『看見・當下』— AR 行動計畫</title>
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>『如何透過影像敘事，創造環境關注與持續改變的力量？』— 隊伍: WE CAN DO STATS (完整報告版)</title>
     <!-- Chosen Palette: Warm Neutral (bg-neutral-50) + Emerald (bg-emerald-700) + Amber Accent (text-amber-600) -->
     <!-- Application Structure Plan: 採用單頁式應用 (SPA) 結構，頂部有 sticky 導覽列，搭配捲動監控 (scroll-spy)。架構分為六大區塊：1. 緒論 (介紹)、2. 挑戰與洞察 (問題)、3. 解決方案 (AR App)、4. 觸發改變 (CTA 與行銷)、5. 推廣計畫 (Go-to-Market)、6. 結論 (KPIs)。這個結構能模仿簡報的線性說服流程 (問題 -> 方案 -> 影響)，同時允許評審透過導覽列進行非線性跳轉，以尊重評審時間。互動性主要來自於將 OpView 數據轉化為動態 Chart.js 圖表，並製作一個 AR App 的視覺模型 (Mockup)，使方案更具體。 -->
     <!-- Visualization & Content Choices:
@@ -35,6 +35,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             background-color: var(--color-bg);
             color: var(--color-text);
+            line-height: 1.75; /* 增加行高以利閱讀 */
         }
         .chart-container {
             position: relative;
@@ -74,12 +75,14 @@
         <!-- Section 1: 緒論 / 封面 (Slide 1-2) -->
         <section id="home" class="w-full min-h-[70vh] flex items-center justify-center text-center bg-white shadow-lg pt-16 pb-20 px-4">
             <div class="max-w-3xl">
-                <h1 class="text-4xl md:text-6xl font-bold text-emerald-700">『看見・當下』</h1>
-                <h2 class="mt-4 text-2xl md:text-3xl font-light text-gray-700">讓影像活起來的 AR 行動計畫</h2>
-                <p class="mt-8 text-lg text-gray-600 max-w-2xl mx-auto">
-                    齊柏林導演用影像讓我們「看見台灣」，基金會繼承使命，透過展覽喚醒大眾。本企劃將回應一個核心命題：
+                <h1 class="text-4xl md:text-6xl font-bold text-emerald-700">『如何透過影像敘事，創造環境關注與持續改變的力量？』</h1>
+                <h2 class="mt-4 text-2xl md:text-3xl font-light text-gray-700">隊伍: WE CAN DO STATS</h2>
+                <p class="mt-8 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    齊柏林導演的影像遺產，是基金會最珍貴的資產，它成功讓我們「看見台灣」。然而，在數位時代，我們的挑戰是如何讓這份「靜態的感動」<strong class="text-emerald-700">轉化為「動態的參與」</strong>，並回應基金會的核心命題。
+                    <br><br>
+                    本企劃『如何透過影像敘事，創造環境關注與持續改變的力量？』，提出了一個以 AR 科技為載體，將靜態影像展覽<strong class="text-emerald-700">升級為「即時環境數據互動平台」</strong>的完整戰略。
                 </p>
-                <blockquote class="mt-6 p-6 bg-emerald-50 border-l-4 border-emerald-600 text-xl font-medium text-emerald-900 rounded-r-lg shadow-sm">
+                <blockquote class="mt-10 p-6 bg-emerald-50 border-l-4 border-emerald-600 text-xl font-medium text-emerald-900 rounded-r-lg shadow-sm">
                     「如何透過影像敘事， 創造環境關注與<span class="font-bold text-amber-600">持續改變</span>的力量？」
                 </blockquote>
             </div>
@@ -88,37 +91,43 @@
         <!-- Section 2: 挑戰與洞察 (Slide 3-4) -->
         <section id="challenge" class="py-20 md:py-28 px-4 scroll-mt-20">
             <div class="container mx-auto max-w-6xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">挑戰與洞察</h2>
-                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">我們發現，從「感動」到「行動」之間，存在一個明顯的斷裂點。</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">挑戰與洞察：定義真實的「斷裂點」</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16 leading-relaxed">一個成功的行銷策略始於對問題的精準定義。我們發現，齊導演帶來的「感動」與命題要求的「持續改變」之間，存在一個顯著的「<strong class="text-emerald-700">行動斷裂點 (Action Gap)</strong>」。</p>
                 
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <!-- Slide 3: 挑戰 -->
                     <div class="space-y-6">
-                        <h3 class="text-2xl font-semibold mb-4 text-emerald-700">當下的三大挑戰</h3>
+                        <h3 class="text-2xl font-semibold mb-4 text-emerald-700">當前營運的三大挑戰</h3>
                         <div class="p-5 bg-white rounded-lg shadow-lg border border-gray-200">
-                            <h4 class="text-lg font-bold text-gray-800">1. 靜態的感動</h4>
-                            <p class="text-gray-600 mt-1">傳統攝影展是「單向」觀看，影像是「過去」的紀錄，難以呈現環境的動態變化。</p>
+                            <h4 class="text-lg font-bold text-gray-800">1. 靜態的感動 (Static Legacy)</h4>
+                            <p class="text-gray-600 mt-1 leading-relaxed">齊導演的照片是「過去特定時間」的紀錄，但環境議題是「當下持續發生」的。靜態展出難以即時呈現環境的動態變化，導致感動停留在歷史回憶。</p>
                         </div>
                         <div class="p-5 bg-white rounded-lg shadow-lg border border-gray-200">
-                            <h4 class="text-lg font-bold text-gray-800">2. 行動的斷裂</h4>
-                            <p class="text-gray-600 mt-1">觀展者當下的感動，在離開展場後，難以轉化為「持續的行動」。</p>
+                            <h4 class="text-lg font-bold text-gray-800">2. 行動的斷裂 (Conversion Gap)</h4>
+                            <p class="text-gray-600 mt-1 leading-relaxed">觀展者當下的感動，在離開展場後，因缺乏立即、明確的轉化途徑，導致行動意願快速衰退，無法有效轉化為基金會的實質支持（如捐款、連署）。</p>
                         </div>
                         <div class="p-5 bg-white rounded-lg shadow-lg border border-gray-200">
-                            <h4 class="text-lg font-bold text-gray-800">3. 關注的流失</h4>
-                            <p class="text-gray-600 mt-1">環境是「動態」變化的，但靜態展覽難以呈現「當下」的環境狀態。</p>
+                            <h4 class="text-lg font-bold text-gray-800">3. 關注的流失 (Audience Churn)</h4>
+                            <p class="text-gray-600 mt-1 leading-relaxed">環境議題需要「持續性」的關注。然而，一次性的展覽體驗，其內容的固定性，難以創造觀展者「<strong class="text-amber-600">重複造訪</strong>」的動機，導致高客戶流失率。</p>
                         </div>
                     </div>
 
                     <!-- Slide 4: OpView 1 -->
                     <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200">
                         <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 1】</h3>
-                        <h4 class="text-xl font-light text-center mb-6">「感動」仍在，但「行動」缺席</h4>
+                        <h4 class="text-xl font-light text-center mb-6">社群話語分析：「感動」仍在，「行動」缺席</h4>
                         <div class="chart-container max-w-sm mx-auto">
                             <canvas id="opviewChart1"></canvas>
                         </div>
                         <div class="mt-6 p-4 bg-gray-100 rounded-lg">
                             <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
-                            <p class="text-gray-600 text-center mt-2">數據證實了「行動斷裂」的痛點。大眾的感動是真實的 (90%)，但我們的策略必須提供一個「從懷念走向行動」(僅 10%) 的橋樑。</p>
+                            <p class="text-gray-600 text-center mt-2 leading-relaxed">
+                                我們的質疑，在 OpView 社群數據中得到了證實。我們分析了近一年來關於「齊柏林」的社群討論，發現高達 90% 的聲量都集中在「懷念、感動、回憶」等<strong class="text-emerald-700">「過去式」的情感詞彙</strong>；
+                                <br><br>
+                                而<strong class="text-emerald-700">只有不到 10% 的討論，是關於「實際行動、捐款、或環保實踐」等「未來式」的行動詞彙。</strong>
+                                <br><br>
+                                這個巨大的「話語斷層」證實了「行動斷裂」的真實存在。大眾不是不感動，而是<strong class="text-emerald-700">缺乏一個強而有力的「賦能工具 (Enabler)」</strong>，將這份感動從過去帶到現在，並轉化為未來的行動。
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -132,12 +141,19 @@
                 
                 <!-- Slide 5: 核心策略 -->
                 <div class="text-center max-w-3xl mx-auto mb-16">
-                    <p class="text-lg text-gray-600 mb-4">從「靜態展覽」升級為：</p>
+                    <p class="text-lg text-gray-600 mb-4">我們的核心策略，是將基金會的實體展覽，從「靜態內容資產」升級為：</p>
                     <h3 class="text-4xl font-bold text-gray-800">一座「活的展覽 (A Living Exhibition)」</h3>
-                    <p class="text-lg text-gray-600 mt-6">我們不只讓觀眾「看見」齊柏林拍下的「過去」，更要讓他們「看見」環境變化的「**當下**」。</p>
+                    <p class="text-lg text-gray-600 mt-6 leading-relaxed">
+                        我們不只讓觀眾「看見」齊柏林拍下的「過去」，更要讓他們「看見」並「體驗」環境變化的「<strong class="text-emerald-700">當下</strong>」。
+                        <br>
+                        透過我們的 AR 企劃，觀眾掃描齊導演的「過去」的影像，手機上呈現的卻是該地點，根據即時氣象與日期資料所模擬出的「<strong class="text-emerald-700">當下</strong>」樣貌。
+                    </p>
                     <blockquote class="mt-8 p-4 bg-emerald-50 border-t-4 border-b-4 border-emerald-500 text-xl font-medium text-emerald-900 shadow-sm">
                         「每一次看見，都是獨一無二。」<br>「每一次行動，都能守護未來。」
                     </blockquote>
+                    <p class="text-lg text-gray-600 mt-6 leading-relaxed">
+                        我們的 Slogan 點出了雙重價值：「每一次看見，都是獨一無二。」— 這是對<strong class="text-amber-600">觀展者的行銷承諾（創造重遊價值）</strong>；「每一次行動，都能守護未來。」— 這是對<strong class="text-emerald-700">基金會的使命承諾（創造改變價值）</strong>。
+                    </p>
                 </div>
 
                 <!-- Slide 7: OpView 2 -->
@@ -149,20 +165,27 @@
                     </div>
                     <div class="mt-6 p-4 bg-gray-100 rounded-lg">
                         <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
-                        <p class="text-gray-600 text-center mt-2">數據證明，AR 不僅是噱頭，更是能有效創造「正面口碑」與「社群分享」的行銷利器，完美符合我們的需求。</p>
+                        <p class="text-gray-600 text-center mt-2 leading-relaxed">
+                            為什麼選擇 AR 作為核心載體？因為 OpView 數據顯示，在所有展覽行銷工具中，「AR 互動」所創造的<strong class="text-emerald-700">社群討論聲量</strong>（藍色長條）遠高於一般展覽的基準線，這代表它具備強大的「<strong class="text-emerald-700">議題引爆力</strong>」。
+                            <br><br>
+                            更重要的是，它的<strong class="text-emerald-700">P/N 值（正負評比）</strong>（黃色長條），高達 6.8，這代表 AR 體驗能創造極高的「<strong class="text-emerald-700">正面品牌聯想</strong>」與「<strong class="text-emerald-700">自主分享意願</strong>」。
+                            <br><br>
+                            這證明 AR 是最能同時滿足「行銷擴散（廣度）」與「品牌好感（深度）」的策略工具。
+                        </p>
                     </div>
                 </div>
 
                 <!-- Slide 6, 8, 9: AR 體驗與功能 -->
                 <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
                     <div class="space-y-4">
-                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">『看見・當下』 AR 體驗</h3>
-                        <p class="text-lg text-gray-600">透過基金會專屬 APP，觀展者掃描展場影像，即可啟動 AR 體驗三部曲：</p>
+                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">『如何透過影像敘事，創造環境關注與持續改變的力量？』 AR 體驗</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed">我們的 APP 體驗流程極為直觀：觀展者掃描展場影像，APP 將即時串接「中央氣象署 API」與「手機系統日期」資料庫，最後在手機上動態生成 AR 模擬畫面。</p>
                         <ol class="list-decimal list-inside space-y-3 text-gray-700 text-lg">
                             <li><span class="font-bold text-gray-800">掃描 (Scan)：</span> 掃描展場中指定的影像。</li>
                             <li><span class="font-bold text-gray-800">連結 (Connect)：</span> 即時串接「中央氣象署 API」與「手機系統日期」。</li>
                             <li><span class="font-bold text-gray-800">呈現 (Display)：</span> AR 畫面將「即時模擬」出該地點的當下樣貌。</li>
                         </ol>
+                        <p class="text-lg text-gray-600 leading-relaxed mt-4">為此，我們設計了三大核心功能，分別是：「即時天氣」、「即時四季」和「即時生態」。這三項功能分別對應了不同的行銷心理動機。</p>
                     </div>
                     
                     <!-- 互動頁籤 -->
@@ -180,16 +203,16 @@
                         </div>
                         <div class="p-6 bg-white min-h-[200px]">
                             <div x-show="tab === 'weather'" class="space-y-2">
-                                <h4 class="text-xl font-bold text-gray-800">功能 1：【即時天氣】</h4>
-                                <p class="text-gray-600">掃描玉山。如果 API 回傳為雨天，AR 就呈現「雨中的玉山」；如果是晴天，則呈現「晴空的玉山」。觸發觀展者對「即時」的好奇。</p>
+                                <h4 class="text-xl font-bold text-gray-800">功能 1：【即時天氣】(觸發即時好奇)</h4>
+                                <p class="text-gray-600 leading-relaxed">掃描玉山。如果 API 回傳為雨天，AR 就呈現「雨中的玉山」；如果是晴天，則呈現「晴空的玉山」。此功能滿足觀展者對「<strong class="text-amber-600">即時性</strong>」與「<strong class="text-amber-600">連結感</strong>」的好奇。</p>
                             </div>
                             <div x-show="tab === 'seasons'" class="space-y-2">
-                                <h4 class="text-xl font-bold text-gray-800">功能 2：【即時四季】</h4>
-                                <p class="text-gray-600">透過手機日期判斷。6 月（夏季）觀展，AR 呈現「夏日的樣貌」；12 月（冬季）觀展，則可能呈現「雪景」。觸發觀展者對「稀缺」的追求。</p>
+                                <h4 class="text-xl font-bold text-gray-800">功能 2：【即時四季】(觸發稀缺追求)</h4>
+                                <p class="text-gray-600 leading-relaxed">透過手機日期判斷。6 月（夏季）觀展，AR 呈現「夏日的樣貌」；12 月（冬季）觀展，則可能呈現「雪景」。此功能創造了「<strong class="text-amber-600">稀缺性</strong>」，驅動觀展者「<strong class="text-amber-600">為了蒐集不同樣貌而重遊</strong>」。</p>
                             </div>
                             <div x-show="tab === 'ecology'" class="space-y-2">
-                                <h4 class="text-xl font-bold text-gray-800">功能 3：【即時生態】</h4>
-                                <p class="text-gray-600">掃描「台灣黑熊」棲地照片。白天掃描，AR 呈現「日間覓食」；夜晚觀展，則呈現「夜間歇息」。提升在地「關懷」的連結。</p>
+                                <h4 class="text-xl font-bold text-gray-800">功能 3：【即時生態】(觸發在地關懷)</h4>
+                                <p class="text-gray-600 leading-relaxed">掃描「台灣黑熊」棲地照片。白天掃描，AR 呈現「日間覓食」；夜晚觀展，則呈現「夜間歇息」。此功能深化了影像的「<strong class="text-amber-600">生命教育</strong>」意義，提升在地「<strong class="text-amber-600">關懷</strong>」的連結。</p>
                             </div>
                         </div>
                     </div>
@@ -198,13 +221,17 @@
                 <!-- Slide 10: OpView 3 -->
                 <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200 max-w-4xl mx-auto">
                     <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 3】</h3>
-                    <h4 class="text-xl font-light text-center mb-6">策略命中「即時、稀缺、在地」三大熱議主題</h4>
+                    <h4 class="text-xl font-light text-center mb-6">策略命中「即時、稀缺、在地」三大社群熱議主題</h4>
                     <div class="chart-container max-w-2xl mx-auto">
                         <canvas id="opviewChart3"></canvas>
                     </div>
                     <div class="mt-6 p-4 bg-gray-100 rounded-lg">
                         <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
-                        <p class="text-gray-600 text-center mt-2">我們的 AR 功能並非憑空想像，而是精準回應了社群上「關注度最高」的三大主題，確保企劃能引發共鳴。</p>
+                        <p class="text-gray-600 text-center mt-2 leading-relaxed">
+                            這三項功能並非憑空想像，而是基於 OpView 的數據洞察。我們的數據顯示，「即時性」（如天氣）、「稀缺性」（如雪景）和「在地關懷」（如台灣黑熊），正是目前社群上<strong class="text-emerald-700">聲量最高、最能引發討論</strong>的三大主題。
+                            <br><br>
+                            這代表我們的企劃<strong class="text-emerald-700">並非「教育」市場，而是「迎合」市場</strong>。我們精準地將基金會的保育內核，包裝在目標受眾（TA）「<strong class="text-emerald-700">本來就感興趣</strong>」的話題上，確保企劃能引發最大共鳴。
+                        </p>
                     </div>
                 </div>
 
@@ -214,19 +241,24 @@
         <!-- Section 4: 觸發改變 (Slide 11-15) -->
         <section id="action" class="py-20 md:py-28 px-4 scroll-mt-20">
             <div class="container mx-auto max-w-6xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">觸發改變</h2>
-                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">AR 很酷，但不足以觸發「改變」。我們的設計核心是「**行動閉環**」，AR 只是觸發點。</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">觸發改變：從「互動」到「行動」的設計</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16 leading-relaxed">AR 的互動體驗很酷，但不足以觸發「改變」。回應命題的關鍵，在於我們設計的「<strong class="text-emerald-700">即時行動閉環 (Real-time Action Loop)</strong>」，AR 僅是觸發點。</p>
 
                 <!-- Slide 12: CTA Mockup -->
                 <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
                     <div class="space-y-4">
                         <h3 class="text-3xl font-semibold mb-4 text-emerald-700">CTA 設計：打造「行動閉環」</h3>
-                        <p class="text-lg text-gray-600">在 AR 體驗的同時，我們提供「知識連結」與「行動呼籲 (CTA)」，引導觀展者完成從「互動」到「行動」的關鍵一步。</p>
-                        <ul class="space-y-3 text-gray-700">
-                            <li><strong class="text-gray-900">1. 掃描：</strong> 掃描海岸線照片。</li>
-                            <li><strong class="text-gray-900">2. 呈現：</strong> AR 呈現「大潮、陰天」的海岸。</li>
-                            <li><strong class="text-gray-900">3. 連結 (知識)：</strong> 跳出資訊：「您知道嗎？氣候變遷使海平面上升，這片沙灘正以每年 1 公尺的速度消失...」</li>
-                            <li><strong class="text-gray-900">4. 行動 (CTA)：</strong> 畫面出現三個按鈕，提供低門檻的行動選項。</li>
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                            這就是我們最重要的「行動閉環」設計，它在「<strong class="text-emerald-700">感動的最高點</strong>」立即提供了轉化出口。
+                            <br>
+                            當觀展者掃描海岸線照片，看到 AR 畫面的同時，APP 會立即跳出相關的「環境知識點」（例如海平面上升的危機），賦予影像「<strong class="text-emerald-700">當下的議題性</strong>」。
+                            <br>
+                            更重要的是，下方會立刻出現三個「行動呼籲 (CTA)」按鈕，引導觀展者完成從「互動」到「行動」的關鍵一步：
+                        </p>
+                        <ul class="space-y-3 text-gray-700 list-disc list-inside">
+                            <li><strong class="text-gray-900">[ 隨手分享 ]:</strong> (行銷漏斗：曝光) 產生客製化 AR 合成照，擴大社群病毒式行銷。</li>
+                            <li><strong class="text-gray-900">[ 了解更多 ]:</strong> (行銷漏斗：考慮) 連結至深度文章或影片，深化環境教育。</li>
+                            <li><strong class="text-gray-900">[ 我要行動 ]:</strong> (行銷漏斗：轉化) 直接連結到連署或捐款頁面，將感動轉化為實質改變。</li>
                         </ul>
                     </div>
 
@@ -262,18 +294,24 @@
                     </div>
                     <div class="mt-6 p-4 bg-gray-100 rounded-lg">
                         <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
-                        <p class="text-gray-600 text-center mt-2">大眾不是不關心，而是「行動無門」。我們的 CTA 提供了「簡單、明確、低門檻」的行動選項，能有效將「關注」轉化為「改變」。</p>
+                        <p class="text-gray-600 text-center mt-2 leading-relaxed">
+                            為什麼這個 CTA 設計是有效的？
+                            <br>
+                            因為 OpView 數據顯示，大眾在討論環保時，最大的阻礙是「不知道怎麼做」(佔 45%)、以及「覺得太難」(佔 25%)。這種「<strong class="text-emerald-700">行動無力感</strong>」與「<strong class="text-emerald-700"> perceived barrier to entry (感知到的進入障礙)</strong>」正是我們需要解決的。
+                            <br><br>
+                            因此，我們的 CTA 提供了「<strong class="text-emerald-700">簡單、明確、低門檻</strong>」的行動選項（如一鍵分享、一鍵連署），有效降低了行動阻力，這被證實是<strong class="text-emerald-700">最能有效觸發微轉化 (Micro-conversion)</strong> 的方式。
+                        </p>
                     </div>
                 </div>
 
                 <!-- Slide 14 & 15: 創新行銷 & OpView 5 -->
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div class="space-y-4">
-                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">創新行銷：持續重遊 (Re-engagement)</h3>
-                        <p class="text-lg text-gray-600">利用 AR 的「**動態內容**」，創造「**持續重遊**」的強大動機，這就是我們的「活展覽」行銷策略。</p>
+                        <h3 class="text-3xl font-semibold mb-4 text-emerald-700">創新行銷：驅動「持續重遊」 (Re-engagement)</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed">本企劃最大的創新行銷點，在於利用 AR 的「<strong class="text-emerald-700">動態內容 (Dynamic Content)</strong>」，創造「<strong class="text-emerald-700">持續重遊</strong>」的強大動機。這就是我們的「活展覽」行銷策略，旨在解決「關注流失」的痛點。</p>
                         <ul class="list-check space-y-3 text-gray-700">
-                            <li class="pl-4 relative before:content-['✓'] before:text-emerald-600 before:absolute before:left-0 before:top-1"><strong class="text-gray-900">創造「獨特稀缺感」 (FOMO)：</strong> 「你今天看到的展，跟昨天看到的不一樣。」展覽從「一次性」變成了「可收集」的體驗。</li>
-                            <li class="pl-4 relative before:content-['✓'] before:text-emerald-600 before:absolute before:left-0 before:top-1"><strong class="text-gray-900">APP 主動式再行銷：</strong> 寒流來襲時，APP 推播：「快訊：玉山可能下雪了！快來展場捕捉『AR 限定雪景』！」</li>
+                            <li class="pl-4 relative before:content-['✓'] before:text-emerald-600 before:absolute before:left-0 before:top-1"><strong class="text-gray-900">創造「獨特稀缺感」 (FOMO)：</strong> 核心訊息：「你今天看到的展，跟昨天看到的不一樣。」展覽從「一次性消費品」轉變為「<strong class="text-amber-600">可收集的動態體驗</strong>」。</li>
+                            <li class="pl-4 relative before:content-['✓'] before:text-emerald-600 before:absolute before:left-0 before:top-1"><strong class="text-gray-900">APP 主動式再行銷 (Push Retargeting)：</strong> 寒流來襲時，APP 會主動推播：「快訊：玉山可能下雪了！快來展場捕捉『AR 限定雪景』！」利用天氣事件，不斷創造<strong class="text-amber-600">即時性</strong>的回訪動機。</li>
                         </ul>
                     </div>
 
@@ -281,13 +319,16 @@
                     <div class="bg-white p-6 md:p-8 rounded-lg shadow-2xl border border-gray-200">
                         <h3 class="text-2xl font-semibold text-center mb-1 text-emerald-700">【OpView 佐證 5】</h3>
                         <h4 class="text-xl font-light text-center mb-6">為何此策略能打動 Z 世代？</h4>
-                        <div class="chart-container max-w-sm mx-auto">
-                            <canvas id="opviewChart5"></canvas>
+                    <div class="chart-container max-w-sm mx-auto">
+                        <canvas id="opviewChart5"></canvas>
                         </div>
                         <div class="mt-6 p-4 bg-gray-100 rounded-lg">
-                            <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
-                            <p class="text-gray-600 text-center mt-2">我們的「活展覽」策略，完美創造了「每日限定」的稀缺感。這精準命中了 Z 世代「害怕錯過 (FOMO)」並樂於「拍照打卡」的社群心理。</p>
-                        </div>
+                        <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
+                        <p class="text-gray-600 text-center mt-2 leading-relaxed">
+                            我們的「活展覽」策略，完美創造了「每日限定」的稀缺感。這精準命中了 Z 世代的核心驅動力：「<strong class="text-emerald-700">害怕錯過 (FOMO)</strong>」以及追求「<strong class="text-emerald-700">社群貨幣 (Social Currency)</strong>」。
+                            <br><br>
+                            如圖表熱詞所示，<strong class="text-emerald-700">「#限定」、「#打卡」</strong>是 Z 世代參與線下活動的最強動機。我們的策略能有效驅動年輕族群的參與、分享，並為基金會注入新的活力。
+                        </p>
                     </div>
                 </div>
             </div>
@@ -296,23 +337,24 @@
         <!-- Section 5: 推廣計畫 (Slide 16-17) -->
         <section id="promotion" class="py-20 md:py-28 px-4 bg-white shadow-inner scroll-mt-20">
             <div class="container mx-auto max-w-6xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">推廣計畫與夥伴佈局</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">推廣計畫與夥伴佈局</h2>
+                <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16 leading-relaxed">有了好的產品，更需要精準的推廣。我們的推廣策略分為「線上引爆」與「線下轉化」兩條路徑，並透過數據分析，建構一個協同效應的夥伴生態系。</p>
                 
                 <!-- Slide 16: 推廣策略 -->
                 <div class="grid md:grid-cols-2 gap-12 mb-20">
                     <div class="bg-emerald-50 p-6 rounded-lg shadow-lg border border-emerald-200">
-                        <h3 class="text-2xl font-semibold mb-4 text-emerald-800">1. 線上 (Online)</h3>
-                        <ul class="list-disc list-inside space-y-2 text-emerald-900">
-                            <li><strong>社群預熱：</strong> 「#如果齊柏林今天還在飛」挑戰，引發討論。</li>
-                            <li><strong>KOL 合作：</strong> 邀請「科技類」(開箱AR)、「環保類」(倡議理念)、「旅遊類」(介紹景點) 的 KOC/KOL 搶先體驗。</li>
-                            <li><strong>跨界合作：</strong> 與「天氣 APP」合作推播，在惡劣天氣時推播展覽訊息。</li>
+                        <h3 class="text-2xl font-semibold mb-4 text-emerald-800">1. 線上 (Online) - 議題引爆與聲量擴散</h3>
+                        <ul class="list-disc list-inside space-y-2 text-emerald-900 leading-relaxed">
+                            <li><strong>社群預熱：</strong> 「#如果齊柏林今天還在飛」挑戰，運用 UGC (使用者生成內容) 引發前期討論。</li>
+                            <li><strong>KOL 合作：</strong> 邀請「科技類」(開箱AR技術)、「環保類」(倡議理念)、「旅遊類」(介紹景點) 的 KOC/KOL 搶先體驗，進行多角度的內容鋪墊。</li>
+                            <li><strong>跨界合作 (Key Partner)：</strong> 與「天氣 APP」合作推播，在惡劣天氣或特殊天象時推播展覽訊息，精準強化「即時性」的產品賣點。</li>
                         </ul>
                     </div>
                     <div class="bg-amber-50 p-6 rounded-lg shadow-lg border border-amber-200">
-                        <h3 class="text-2xl font-semibold mb-4 text-amber-800">2. 線下 (Offline)</h3>
-                        <ul class="list-disc list-inside space-y-2 text-amber-900">
-                            <li><strong>展場引導：</strong> 明確的 AR 體驗指示牌，降低使用門檻。</li>
-                            <li><strong>票務策略：</strong> 推出「四季套票」或「憑票根重遊 8 折」優惠，將重遊動機轉化為實際營收。</li>
+                        <h3 class="text-2xl font-semibold mb-4 text-amber-800">2. 線下 (Offline) - 體驗優化與營收轉化</h3>
+                        <ul class="list-disc list-inside space-y-2 text-amber-900 leading-relaxed">
+                            <li><strong>展場動線優化 (User Journey)：</strong> 明確的 AR 體驗指示牌與人員引導，降低使用門檻，確保體驗流暢。</li>
+                            <li><strong>創新票務策略 (Monetization)：</strong> 推出「四季套票」或「憑票根重遊 8 折」優惠，將「重遊動機」直接轉化為「實際營收」。</li>
                         </ul>
                     </div>
                 </div>
@@ -326,24 +368,30 @@
                             <span class="text-4xl">💻</span>
                             <h5 class="text-xl font-bold mt-3 text-gray-800">科技 KOL</h5>
                             <p class="text-gray-600 mt-2">對「新科技」與「展覽」皆有高度興趣。</p>
-                            <span class="mt-4 inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold text-sm">= 早期採用者</span>
+                            <span class="mt-4 inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold text-sm">目標：早期採用者</span>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-xl border border-gray-200 text-center">
                             <span class="text-4xl">🌦️</span>
                             <h5 class="text-xl font-bold mt-3 text-gray-800">天氣 APP</h5>
                             <p class="text-gray-600 mt-2">用戶基數龐大，遍佈各年齡層。</p>
-                            <span class="mt-4 inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-semibold text-sm">= 大眾市場</span>
+                            <span class="mt-4 inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-semibold text-sm">目標：大眾市場</span>
                         </div>
                         <div class="bg-white p-6 rounded-lg shadow-xl border border-gray-200 text-center">
                             <span class="text-4xl">🌱</span>
                             <h5 class="text-xl font-bold mt-3 text-gray-800">環保 KOL</h5>
                             <p class="text-gray-600 mt-2">高黏著度、高行動力，認同基金會理念。</p>
-                            <span class="mt-4 inline-block bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold text-sm">= 理念支持者</span>
+                            <span class="mt-4 inline-block bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-semibold text-sm">目標：理念支持者</span>
                         </div>
                     </div>
                     <div class="mt-8 p-4 bg-gray-100 rounded-lg max-w-2xl mx-auto">
                         <h5 class="font-bold text-center text-gray-700">本頁洞察 (Insight)</h5>
-                        <p class="text-gray-600 text-center mt-2">我們的推廣佈局並非亂槍打鳥，而是透過數據驗證，能精準觸及「科技嘗鮮者」、「理念支持者」與「廣大潛在觀展者」。</p>
+                        <p class="text-gray-600 text-center mt-2 leading-relaxed">
+                            我們的推廣佈局是基於「<strong class="text-emerald-700">多維度受眾 (Multi-segment Audience)</strong>」的考量。OpView 數據證實，這三類夥伴能幫我們建構一個協同生態系：
+                            <br>1. <strong class="text-emerald-700">科技 KOL</strong>：負責觸及對 AR 好奇的「科技嘗鮮者」，<strong class="text-amber-600">製造初期聲量</strong>。
+                            <br>2. <strong class="text-emerald-700">天氣 APP</strong>：負責觸及廣大的「大眾市場」，<strong class="text-amber-600">最大化曝光</strong>。
+                            <br>3. <strong class="text-emerald-700">環保 KOL</strong>：負責觸及高黏著度的「理念支持者」，<strong class="text-amber-600">深化理念並驅動轉化</strong>。
+                            <br>此佈局能最大化行銷效益，並同時兼顧廣度、深度與品牌高度。
+                        </p>
                     </div>
                 </div>
             </div>
@@ -354,38 +402,36 @@
             <div class="container mx-auto max-w-6xl text-center">
                 <h2 class="text-3xl md:text-4xl font-bold mb-12">效益評估 (KPI) & 結論</h2>
                 
-                <!-- Slide 18: KPI -->
-                <p class="text-lg text-emerald-100 mb-4">我們將專注於兩個核心指標：</p>
+                <p class="text-lg text-emerald-100 mb-4 leading-relaxed">為確保企劃成功並回應雙重目標（行銷創新 & 基金會使命），我們將專注於兩個最核心的關鍵績效指標：</p>
                 <div class="flex flex-col md:flex-row justify-center gap-8 mb-16">
                     <div class="bg-white/10 backdrop-blur-sm p-6 rounded-lg flex-1 border border-white/20">
-                        <h4 class="text-lg font-semibold text-amber-300">關鍵創新指標</h4>
+                        <h4 class="text-lg font-semibold text-amber-300">關鍵創新指標 (行銷效益)</h4>
                         <p class="text-5xl font-bold text-white mt-2">重遊率</p>
-                        <p class="text-emerald-100 mt-2">(Re-visit Rate)</p>
+                        <p class="text-emerald-100 mt-2">(Re-visit Rate)<br>用以驗證「活展覽」策略對<br>提升觀展者黏著度的成效</p>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm p-6 rounded-lg flex-1 border border-white/20">
-                        <h4 class="text-lg font-semibold text-amber-300">關鍵改變指標</h4>
+                        <h4 class="text-lg font-semibold text-amber-300">關鍵改變指標 (使命效益)</h4>
                         <p class="text-5xl font-bold text-white mt-2">CTA 點擊率</p>
-                        <p class="text-emerald-100 mt-2">(Action Click Rate)</p>
+                        <p class="text-emerald-100 mt-2">(Action Click Rate)<br>用以驗證「行動閉環」設計<br>將感動轉化為實質改變的成效</p>
                     </div>
                 </div>
 
-                <!-- Slide 19: 結論 -->
-                <p class="text-xl text-emerald-100 max-w-3xl mx-auto mb-6">
+                <p class="text-xl text-emerald-100 max-w-3xl mx-auto mb-6 leading-relaxed">
                     齊柏林導演用影像，讓我們「看見台灣」。<br>
-                    我們的「看見・當下」計畫，回應了時代的呼喚——<strong class="text-white">環境，正分分秒秒在改變。</strong>
+                    我們的「如何透過影像敘事，創造環境關注與持續改變的力量？」計畫，則是回應這個時代的呼喚——<strong class="text-white">環境，正分分秒秒在改變。</strong>
                 </p>
-                <p class="text-xl text-white max-w-3xl mx-auto font-light mb-10">
-                    我們透過 AR，讓靜態的影像「<strong class="font-semibold">活了過來</strong>」，讓觀展者「<strong class="font-semibold">持續回來</strong>」，最終，讓短暫的感動，轉化為「<strong class="font-semibold">持續的改變力量</strong>」。
+                <p class="text-xl text-white max-w-3xl mx-auto font-light mb-10 leading-relaxed">
+                    我們透過 AR，讓靜態的影像「<strong class="font-semibold">活了過來</strong>」，讓觀展者「<strong class="font-semibold">持續回來</strong>」，最終，讓短暫的感動，轉化為基金會所期盼的「<strong class->持續的改變力量</strong>」。
                 </p>
                 
-                <h3 class="text-3xl md:text-4xl font-bold text-white">謝謝聆聽</h3>
+                <h3 class="text-3xl md:text-4xl font-bold text-white">感謝您的審閱</h3>
 
             </div>
         </section>
     </main>
 
     <footer class="bg-gray-800 text-gray-400 text-center p-6">
-        <p>&copy; 2025 『看見・當下』 AR 行動計畫</p>
+        <p>&copy; 2025 『如何透過影像敘事，創造環境關注與持續改變的力量？』 AR 行動計畫</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -650,3 +696,5 @@
     </script>
 </body>
 </html>
+
+
